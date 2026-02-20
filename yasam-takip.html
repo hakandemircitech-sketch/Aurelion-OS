@@ -1,0 +1,1510 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurelion OS (AOS) v1.0</title>
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --text-muted: #888;
+      --accent: #7c9c6b;
+      --accent-hover: #8fad7d;
+      --gold: #b8a068;
+      --gold-subtle: rgba(184, 160, 104, 0.25);
+      --radius: 8px;
+      --font: 'Segoe UI', system-ui, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+    }
+    header {
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      border-bottom-color: var(--gold-subtle);
+      position: relative;
+    }
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--gold);
+    }
+    .motto {
+      margin-top: 6px;
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: var(--text-muted);
+      max-width: 420px;
+    }
+    .header-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+    .vault-btn {
+      padding: 8px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .vault-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .vault-icon {
+      font-size: 1rem;
+    }
+    .dept-header {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 8px;
+      margin-top: 24px;
+    }
+    .dept-header:first-child {
+      margin-top: 0;
+    }
+    .aci-note {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+      min-height: 60px;
+    }
+    .aci-note::before {
+      content: "💡 ";
+    }
+    .date-bar {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .date-bar::before {
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--gold-subtle);
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    section {
+      margin-bottom: 32px;
+    }
+    section h2 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .check-list {
+      list-style: none;
+    }
+    .check-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+    .check-list li:last-child { border-bottom: none; }
+    .check-list input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .check-list label { cursor: pointer; flex: 1; }
+    .check-list input:checked + label { color: var(--text-muted); text-decoration: line-through; }
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.95rem;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+    textarea::placeholder { color: var(--text-muted); }
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .weekly-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .weekly-box .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .weekly-box .row:last-of-type { margin-bottom: 0; }
+    .weekly-box input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .weekly-box label { cursor: pointer; font-size: 0.95rem; }
+    .weekly-note {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .weekly-note label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      padding: 4px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      flex-wrap: wrap;
+    }
+    .nav-tabs button {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .nav-tabs button:hover { color: var(--text); }
+    .nav-tabs button.active {
+      background: var(--border);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px var(--gold-subtle);
+    }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .day-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .day-nav button {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .day-nav button:hover { border-color: var(--accent); }
+    .day-nav span { font-size: 0.95rem; color: var(--text-muted); }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      padding: 10px 18px;
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 0.9rem;
+      border-radius: var(--radius);
+      opacity: 0;
+      transition: transform 0.25s, opacity 0.25s;
+      z-index: 100;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    .main-plan-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .plan-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-item:last-child { border-bottom: none; }
+    .plan-item strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .plan-item p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .plan-form-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .form-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .form-group {
+      flex: 1;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .form-group input[type="date"],
+    .form-group select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+    }
+    .form-group input[type="date"]:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .btn-primary {
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius);
+      color: var(--bg);
+      font-family: var(--font);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .filter-box {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-muted);
+      font-family: var(--font);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+    }
+    .plans-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .plan-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      position: relative;
+    }
+    .plan-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .plan-card-text {
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      flex: 1;
+    }
+    .plan-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .plan-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      background: var(--border);
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .plan-tag.gunluk { background: rgba(124, 156, 107, 0.2); color: var(--accent); }
+    .plan-tag.haftalik { background: rgba(124, 156, 107, 0.2); color: var(--accent); }
+    .plan-tag.aylik { background: rgba(124, 156, 107, 0.2); color: var(--accent); }
+    .plan-delete {
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .plan-delete:hover {
+      border-color: #cc4444;
+      color: #cc4444;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .completion-note {
+      margin-top: 12px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-left: 3px solid var(--accent);
+    }
+    .completion-note strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .vision-board-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      position: relative;
+    }
+    .vision-board-box::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(124, 156, 107, 0.1), rgba(124, 156, 107, 0.05));
+      z-index: -1;
+      opacity: 0.5;
+    }
+    .vision-board-box textarea {
+      background: transparent;
+      border: none;
+      padding: 0;
+      min-height: 100px;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .vision-board-box textarea:focus {
+      border: none;
+      outline: none;
+    }
+    .roadmap-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .roadmap-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      position: relative;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 0 rgba(124, 156, 107, 0);
+    }
+    .roadmap-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(124, 156, 107, 0.15);
+    }
+    .roadmap-card::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(124, 156, 107, 0.2), rgba(124, 156, 107, 0.05));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .roadmap-card:hover::before {
+      opacity: 1;
+    }
+    .roadmap-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .stage-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: var(--bg);
+      border-radius: 50%;
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+      box-shadow: 0 0 10px rgba(124, 156, 107, 0.3);
+    }
+    .stage-title {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0;
+    }
+    .stage-title:focus {
+      outline: none;
+      color: var(--accent);
+    }
+    .stage-content {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+    .stage-content:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .btn-secondary {
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .inspiration-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+    }
+    .inspiration-form {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .inspiration-form input {
+      flex: 1;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.9rem;
+    }
+    .inspiration-form input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .btn-small {
+      padding: 10px 16px;
+      background: var(--accent);
+      border: none;
+      border-radius: var(--radius);
+      color: var(--bg);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-small:hover {
+      background: var(--accent-hover);
+    }
+    .inspiration-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .inspiration-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+    .inspiration-item:hover {
+      border-color: var(--accent);
+    }
+    .inspiration-item span {
+      flex: 1;
+      color: var(--text);
+    }
+    .inspiration-delete {
+      padding: 4px 8px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .inspiration-delete:hover {
+      border-color: #cc4444;
+      color: #cc4444;
+    }
+    .backup-footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .backup-btn {
+      padding: 10px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .backup-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .backup-btn-secondary {
+      background: transparent;
+    }
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.show {
+      display: flex;
+    }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .modal-header h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .modal-close:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    .modal-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Aurelion OS (AOS) v1.0</h1>
+      <p class="motto">İnsanın kendini tanıması, yönetmesi, geliştirmesi ve inşa etmesi için bir bilinç işletim sistemi.</p>
+      <div class="date-bar" id="dateBar"></div>
+      <div class="header-right">
+        <button type="button" class="vault-btn" id="vaultBtn" title="ZKID Vault">
+          <span class="vault-icon">🔒</span>
+          <span>ZKID Vault</span>
+        </button>
+      </div>
+    </header>
+
+    <nav class="nav-tabs">
+      <button type="button" class="active" data-tab="daily">Leonardo (Günlük)</button>
+      <button type="button" data-tab="weekly">Leonardo (Haftalık)</button>
+      <button type="button" data-tab="consciousness">ACI</button>
+      <button type="button" data-tab="planning">Aurelion Science</button>
+      <button type="button" data-tab="vision">Gelecek Vizyonu</button>
+    </nav>
+
+    <section class="panel active" id="panel-daily">
+      <div class="dept-header">Leonardo Departmanı — Görev ve Disiplin Katmanı</div>
+      <div class="day-nav">
+        <button type="button" id="prevDay">← Önceki</button>
+        <span id="currentDayLabel"></span>
+        <button type="button" id="nextDay">Sonraki →</button>
+      </div>
+      <h2>Günlük mini kontrol listesi</h2>
+      <ul class="check-list" id="dailyList"></ul>
+    </section>
+
+    <section class="panel" id="panel-weekly">
+      <div class="dept-header">Leonardo Departmanı — Görev ve Disiplin Katmanı</div>
+      <h2>Haftalık değerlendirme</h2>
+      <div class="weekly-box">
+        <div class="row">
+          <input type="checkbox" id="weeklyClean" />
+          <label for="weeklyClean">Oda temizliği + kişisel bakım (Cumartesi veya Pazar)</label>
+        </div>
+        <div class="weekly-note">
+          <label for="weeklyNote">Hafta notu (isteğe bağlı)</label>
+          <textarea id="weeklyNote" placeholder="Bu haftayı nasıl geçirdim? Öne çıkanlar, aksayanlar…" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="day-nav" style="margin-top: 16px;">
+        <button type="button" id="prevWeek">← Önceki hafta</button>
+        <span id="currentWeekLabel"></span>
+        <button type="button" id="nextWeek">Sonraki hafta →</button>
+      </div>
+    </section>
+
+    <section class="panel" id="panel-consciousness">
+      <div class="dept-header">Aurelion Core Intelligence (ACI)</div>
+      <h2>Bilinç yazısı</h2>
+      <div class="day-nav">
+        <button type="button" id="prevDayCons">← Önceki gün</button>
+        <span id="consciousnessDayLabel"></span>
+        <button type="button" id="nextDayCons">Sonraki gün →</button>
+      </div>
+      <textarea id="consciousnessText" placeholder="Bugünkü bilinç yazını buraya yaz…"></textarea>
+      <div id="completionNote" class="completion-note"></div>
+      <div class="aci-note" id="aciNote">Yazılarınızı analiz ediyorum... Bilgece geri bildirimler yakında burada görünecek.</div>
+    </section>
+
+    <section class="panel" id="panel-planning">
+      <h2>Ana planım</h2>
+      <div class="main-plan-box">
+        <div class="plan-item">
+          <strong>1) Uyku düzeni</strong>
+          <p>Uyanış: Her gün 08:00 | Uyku: En geç 24:00'te yatış</p>
+        </div>
+        <div class="plan-item">
+          <strong>2) Sağlık ve alışkanlıklar</strong>
+          <p>Su: Günlük minimum 2 litre | Diş: Günde 2 kez | Limonlu su | Şekersiz (Pazar istisna) | Alkol/madde yok</p>
+        </div>
+        <div class="plan-item">
+          <strong>3) Sigara azaltma planı (5 ay)</strong>
+          <p>Başlangıç: 5/gün | Her ay -1 | Oda/yatakta içilmeyecek</p>
+        </div>
+        <div class="plan-item">
+          <strong>4) Spor ve hareket</strong>
+          <p>Spor salonu: Haftada 3 gün | Esneme: Sabah + akşam | Adım: Min. 5000</p>
+        </div>
+        <div class="plan-item">
+          <strong>5) Üretkenlik ve öğrenme (günlük)</strong>
+          <p>AI uygulamaları: 90 dk | LLM sohbet/üretim: 90 dk | Gelir & iş modeli: 90 dk</p>
+        </div>
+        <div class="plan-item">
+          <strong>6) Ev düzeni ve kişisel bakım</strong>
+          <p>Haftalık: Cumartesi veya Pazar 1 gün oda temizliği + kişisel bakım</p>
+        </div>
+        <div class="plan-item">
+          <strong>7) Minimal yaşam (süreç)</strong>
+          <p>Fiziksel ve dijital alanlarda gereksiz fazlalıklar düzenli ayıklanacak</p>
+        </div>
+        <div class="plan-item">
+          <strong>8) Zihinsel odak ve öncelikler</strong>
+          <p>Yaşamsal hedefler gözetilecek | Fiziksel, zihinsel ve ruhsal sağlık öncelikli</p>
+        </div>
+        <div class="plan-item">
+          <strong>9) Günlük yazı</strong>
+          <p>Her gün 1 adet bilinç yazısı</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top: 32px;">Yeni plan/hedef ekle</h2>
+      <div class="plan-form-box">
+        <textarea id="newPlanText" placeholder="Plan veya hedefini buraya yaz…" rows="2"></textarea>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="planDate">Tarih</label>
+            <input type="date" id="planDate" />
+          </div>
+          <div class="form-group">
+            <label for="planTag">Etiket</label>
+            <select id="planTag">
+              <option value="Günlük">Günlük</option>
+              <option value="Haftalık">Haftalık</option>
+              <option value="Aylık">Aylık</option>
+            </select>
+          </div>
+        </div>
+        <button type="button" id="addPlanBtn" class="btn-primary">Ekle</button>
+      </div>
+
+      <h2 style="margin-top: 32px;">Planlarım</h2>
+      <div class="filter-box">
+        <button type="button" class="filter-btn active" data-filter="all">Tümü</button>
+        <button type="button" class="filter-btn" data-filter="Günlük">Günlük</button>
+        <button type="button" class="filter-btn" data-filter="Haftalık">Haftalık</button>
+        <button type="button" class="filter-btn" data-filter="Aylık">Aylık</button>
+      </div>
+      <div id="plansList" class="plans-list"></div>
+    </section>
+
+    <section class="panel" id="panel-planning">
+      <div class="dept-header">Aurelion Science — Araştırma ve Strateji Katmanı</div>
+      <h2>Ana planım</h2>
+      <h2>Vizyon Panosu</h2>
+      <div class="vision-board-box">
+        <textarea id="visionBoard" placeholder="Dijital Kimlik & Bilinç Sistemi vizyonunu buraya yaz…" rows="4"></textarea>
+      </div>
+
+      <h2 style="margin-top: 32px;">Yol Haritası</h2>
+      <div class="roadmap-container">
+        <div class="roadmap-card" data-stage="1">
+          <div class="roadmap-header">
+            <span class="stage-number">1</span>
+            <input type="text" class="stage-title" placeholder="Aşama başlığı (örn: Temel Disiplin)" value="Aşama 1: Temel Disiplin" />
+          </div>
+          <textarea class="stage-content" placeholder="Bu aşamadaki hedeflerini yaz…" rows="3"></textarea>
+        </div>
+        <div class="roadmap-card" data-stage="2">
+          <div class="roadmap-header">
+            <span class="stage-number">2</span>
+            <input type="text" class="stage-title" placeholder="Aşama başlığı (örn: Teknik Yetkinlik)" value="Aşama 2: Teknik Yetkinlik (Blockchain/AI)" />
+          </div>
+          <textarea class="stage-content" placeholder="Bu aşamadaki hedeflerini yaz…" rows="3"></textarea>
+        </div>
+        <div class="roadmap-card" data-stage="3">
+          <div class="roadmap-header">
+            <span class="stage-number">3</span>
+            <input type="text" class="stage-title" placeholder="Aşama başlığı (örn: Prototip İnşası)" value="Aşama 3: Prototip İnşası" />
+          </div>
+          <textarea class="stage-content" placeholder="Bu aşamadaki hedeflerini yaz…" rows="3"></textarea>
+        </div>
+      </div>
+      <button type="button" id="addStageBtn" class="btn-secondary">+ Yeni Aşama Ekle</button>
+
+      <h2 style="margin-top: 32px;">İlham Kaynakları</h2>
+      <div class="inspiration-box">
+        <div class="inspiration-form">
+          <input type="text" id="newInspiration" placeholder="Blockchain veya AI projesi, fikir veya kaynak ekle…" />
+          <button type="button" id="addInspirationBtn" class="btn-small">Ekle</button>
+        </div>
+        <ul id="inspirationList" class="inspiration-list"></ul>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="toast" id="toast">Kaydedildi</div>
+
+  <div class="modal-overlay" id="vaultModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><span>🔒</span> ZKID Vault</h3>
+        <button type="button" class="modal-close" id="closeVaultModal">×</button>
+      </div>
+      <div class="modal-content">
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px;">Verilerinizi güvenli bir şekilde yedekleyin ve geri yükleyin.</p>
+        <input type="file" id="restoreFile" accept=".json" style="display: none;" />
+        <button type="button" id="backupBtn" class="backup-btn" style="width: 100%;">Verileri Yedekle</button>
+        <button type="button" id="restoreBtn" class="backup-btn backup-btn-secondary" style="width: 100%;">Yedekten Yükle</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const DAILY_ITEMS = [
+        "08:00'de kalktım",
+        "24:00'ten önce yattım",
+        "2L su içtim",
+        "Dişlerimi 2 kez fırçaladım",
+        "Limonlu su içtim",
+        "Esneme (sabah)",
+        "Esneme (akşam)",
+        "5000+ adım attım",
+        "AI uygulamaları 90 dk",
+        "LLM sohbet/üretim 90 dk",
+        "Gelir/iş modeli 90 dk",
+        "Bilinç yazısını yazdım",
+        "Sigara limitine sadık kaldım"
+      ];
+
+      const STORAGE_DAILY = "yasam_daily";
+      const STORAGE_WEEKLY = "yasam_weekly";
+      const STORAGE_CONSCIOUSNESS = "yasam_consciousness";
+      const STORAGE_PLANS = "yasam_plans";
+      const STORAGE_VISION = "yasam_vision";
+      const STORAGE_ROADMAP = "yasam_roadmap";
+      const STORAGE_INSPIRATION = "yasam_inspiration";
+      const BACKUP_KEYS = [STORAGE_DAILY, STORAGE_WEEKLY, STORAGE_CONSCIOUSNESS, STORAGE_PLANS, STORAGE_VISION, STORAGE_ROADMAP, STORAGE_INSPIRATION];
+
+      function todayKey() {
+        const d = new Date();
+        return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+      }
+
+      function weekKey(date) {
+        const d = date || new Date();
+        const start = new Date(d);
+        start.setDate(start.getDate() - start.getDay());
+        const y = start.getFullYear();
+        const m = String(start.getMonth() + 1).padStart(2, "0");
+        const day = String(start.getDate()).padStart(2, "0");
+        return y + "-" + m + "-" + day;
+      }
+
+      function formatDate(key) {
+        const [y, m, d] = key.split("-").map(Number);
+        const date = new Date(y, m - 1, d);
+        return date.toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+      }
+
+      function formatWeekLabel(key) {
+        const [y, m, d] = key.split("-").map(Number);
+        const start = new Date(y, m - 1, d);
+        const end = new Date(start);
+        end.setDate(end.getDate() + 6);
+        return start.toLocaleDateString("tr-TR", { day: "numeric", month: "short" }) + " – " + end.toLocaleDateString("tr-TR", { day: "numeric", month: "short", year: "numeric" });
+      }
+
+      function getStored(key, def) {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : (def !== undefined ? def : {});
+        } catch (_) {
+          return def !== undefined ? def : {};
+        }
+      }
+
+      function setStored(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      function showToast() {
+        const el = document.getElementById("toast");
+        el.classList.add("show");
+        clearTimeout(window._toastT);
+        window._toastT = setTimeout(function () {
+          el.classList.remove("show");
+        }, 2000);
+      }
+
+      let currentDayKey = todayKey();
+      let currentWeekKey = weekKey();
+      let consciousnessDayKey = todayKey();
+      let currentPlanFilter = "all";
+
+      function renderDateBar() {
+        document.getElementById("dateBar").textContent = new Date().toLocaleDateString("tr-TR", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+      }
+
+      function renderDaily() {
+        const all = getStored(STORAGE_DAILY, {});
+        const checks = all[currentDayKey] || {};
+        const ul = document.getElementById("dailyList");
+        ul.innerHTML = "";
+        DAILY_ITEMS.forEach(function (label, i) {
+          const id = "daily-" + i;
+          const checked = !!checks[i];
+          const li = document.createElement("li");
+          li.innerHTML = '<input type="checkbox" id="' + id + '" data-idx="' + i + '" ' + (checked ? "checked" : "") + '><label for="' + id + '">' + label + "</label>";
+          ul.appendChild(li);
+        });
+        document.getElementById("currentDayLabel").textContent = currentDayKey === todayKey() ? "Bugün" : formatDate(currentDayKey);
+        ul.querySelectorAll("input[type=checkbox]").forEach(function (cb) {
+          cb.addEventListener("change", saveDaily);
+        });
+      }
+
+      function saveDaily() {
+        const all = getStored(STORAGE_DAILY, {});
+        const checks = {};
+        document.querySelectorAll("#dailyList input[type=checkbox]").forEach(function (cb) {
+          if (cb.checked) checks[cb.getAttribute("data-idx")] = true;
+        });
+        all[currentDayKey] = checks;
+        setStored(STORAGE_DAILY, all);
+        showToast();
+      }
+
+      function renderWeekly() {
+        const all = getStored(STORAGE_WEEKLY, {});
+        const data = all[currentWeekKey] || { done: false, note: "" };
+        document.getElementById("weeklyClean").checked = data.done || false;
+        document.getElementById("weeklyNote").value = data.note || "";
+        document.getElementById("currentWeekLabel").textContent = formatWeekLabel(currentWeekKey);
+        document.getElementById("weeklyClean").onchange = saveWeekly;
+        document.getElementById("weeklyNote").onchange = saveWeekly;
+        document.getElementById("weeklyNote").onblur = saveWeekly;
+      }
+
+      function saveWeekly() {
+        const all = getStored(STORAGE_WEEKLY, {});
+        all[currentWeekKey] = {
+          done: document.getElementById("weeklyClean").checked,
+          note: document.getElementById("weeklyNote").value.trim()
+        };
+        setStored(STORAGE_WEEKLY, all);
+        showToast();
+      }
+
+      function getCompletionRate(dayKey) {
+        const all = getStored(STORAGE_DAILY, {});
+        const checks = all[dayKey] || {};
+        const total = DAILY_ITEMS.length;
+        const completed = Object.keys(checks).length;
+        return total > 0 ? Math.round((completed / total) * 100) : 0;
+      }
+
+      function extractUserText(storedText) {
+        if (!storedText) return "";
+        const separator = "\n\n---\nTamamlama:";
+        const idx = storedText.indexOf(separator);
+        return idx >= 0 ? storedText.substring(0, idx).trim() : storedText.trim();
+      }
+
+      function addCompletionNote(userText, dayKey) {
+        if (!userText.trim()) return userText;
+        const rate = getCompletionRate(dayKey);
+        const all = getStored(STORAGE_DAILY, {});
+        const checks = all[dayKey] || {};
+        const completed = Object.keys(checks).length;
+        const separator = "\n\n---\nTamamlama:";
+        const note = separator + " %" + rate + " (" + completed + "/" + DAILY_ITEMS.length + " madde)";
+        return userText + note;
+      }
+
+      function renderConsciousness() {
+        const all = getStored(STORAGE_CONSCIOUSNESS, {});
+        const storedText = all[consciousnessDayKey] || "";
+        const userText = extractUserText(storedText);
+        document.getElementById("consciousnessText").value = userText;
+        document.getElementById("consciousnessDayLabel").textContent = consciousnessDayKey === todayKey() ? "Bugün" : formatDate(consciousnessDayKey);
+        document.getElementById("consciousnessText").onchange = saveConsciousness;
+        document.getElementById("consciousnessText").onblur = saveConsciousness;
+        document.getElementById("consciousnessText").oninput = function () {
+          updateACINote(this.value);
+        };
+        
+        const rate = getCompletionRate(consciousnessDayKey);
+        const noteEl = document.getElementById("completionNote");
+        if (storedText.trim()) {
+          const all = getStored(STORAGE_DAILY, {});
+          const checks = all[consciousnessDayKey] || {};
+          const completed = Object.keys(checks).length;
+          noteEl.innerHTML = '<strong>Tamamlama Oranı:</strong> %' + rate + ' (' + completed + '/' + DAILY_ITEMS.length + ' madde tamamlandı)';
+          noteEl.style.display = "block";
+          updateACINote(userText);
+        } else {
+          noteEl.style.display = "none";
+          updateACINote("");
+        }
+      }
+
+      function updateACINote(text) {
+        const noteEl = document.getElementById("aciNote");
+        if (!text || text.trim().length < 10) {
+          noteEl.textContent = "💡 Yazılarınızı analiz ediyorum... Bilgece geri bildirimler yakında burada görünecek.";
+          return;
+        }
+        const words = text.trim().split(/\s+/).length;
+        const rate = getCompletionRate(consciousnessDayKey);
+        let wisdom = "";
+        if (rate >= 85) {
+          wisdom = "Harika bir disiplin günü! Yüksek tamamlama oranı, tutarlılığının gücünü gösteriyor. Bu enerjiyi koru.";
+        } else if (rate >= 70) {
+          wisdom = "İyi bir ilerleme. Bazı alanlar tamamlanmamış olsa da, yolculuğunda ilerliyorsun. Yarın daha iyi olacak.";
+        } else if (rate >= 50) {
+          wisdom = "Bugün zor bir gün olmuş. Önemli olan, yarın daha iyi yapmak için bugünden öğrenmek. Her gün yeni bir başlangıç.";
+        } else {
+          wisdom = "Zor günler geçiriyorsun. Bu normal. Önemli olan pes etmemek ve küçük adımlarla devam etmek. Yarın daha iyi olacak.";
+        }
+        if (words > 200) {
+          wisdom += " Detaylı yazıların, içsel yolculuğunun derinliğini gösteriyor.";
+        }
+        noteEl.textContent = "💡 " + wisdom;
+      }
+
+      function saveConsciousness() {
+        const all = getStored(STORAGE_CONSCIOUSNESS, {});
+        const userText = document.getElementById("consciousnessText").value.trim();
+        const textWithNote = addCompletionNote(userText, consciousnessDayKey);
+        all[consciousnessDayKey] = textWithNote;
+        setStored(STORAGE_CONSCIOUSNESS, all);
+        
+        const rate = getCompletionRate(consciousnessDayKey);
+        const noteEl = document.getElementById("completionNote");
+        if (userText) {
+          const all = getStored(STORAGE_DAILY, {});
+          const checks = all[consciousnessDayKey] || {};
+          const completed = Object.keys(checks).length;
+          noteEl.innerHTML = '<strong>Tamamlama Oranı:</strong> %' + rate + ' (' + completed + '/' + DAILY_ITEMS.length + ' madde tamamlandı)';
+          noteEl.style.display = "block";
+          updateACINote(userText);
+        } else {
+          noteEl.style.display = "none";
+          updateACINote("");
+        }
+        
+        showToast();
+      }
+
+      function addDays(key, delta) {
+        const [y, m, d] = key.split("-").map(Number);
+        const date = new Date(y, m - 1, d);
+        date.setDate(date.getDate() + delta);
+        const yy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, "0");
+        const dd = String(date.getDate()).padStart(2, "0");
+        return yy + "-" + mm + "-" + dd;
+      }
+
+      function addWeeks(key, delta) {
+        const [y, m, d] = key.split("-").map(Number);
+        const date = new Date(y, m - 1, d);
+        date.setDate(date.getDate() + delta * 7);
+        return weekKey(date);
+      }
+
+      document.querySelectorAll(".nav-tabs button").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const tab = btn.getAttribute("data-tab");
+          document.querySelectorAll(".nav-tabs button").forEach(function (b) { b.classList.remove("active"); });
+          document.querySelectorAll(".panel").forEach(function (p) { p.classList.remove("active"); });
+          btn.classList.add("active");
+          document.getElementById("panel-" + tab).classList.add("active");
+          if (tab === "daily") renderDaily();
+          if (tab === "weekly") renderWeekly();
+          if (tab === "consciousness") renderConsciousness();
+          if (tab === "planning") renderPlanning();
+          if (tab === "vision") renderVision();
+        });
+      });
+
+      document.getElementById("prevDay").addEventListener("click", function () {
+        currentDayKey = addDays(currentDayKey, -1);
+        renderDaily();
+      });
+      document.getElementById("nextDay").addEventListener("click", function () {
+        currentDayKey = addDays(currentDayKey, 1);
+        renderDaily();
+      });
+
+      document.getElementById("prevWeek").addEventListener("click", function () {
+        currentWeekKey = addWeeks(currentWeekKey, -1);
+        renderWeekly();
+      });
+      document.getElementById("nextWeek").addEventListener("click", function () {
+        currentWeekKey = addWeeks(currentWeekKey, 1);
+        renderWeekly();
+      });
+
+      document.getElementById("prevDayCons").addEventListener("click", function () {
+        saveConsciousness();
+        consciousnessDayKey = addDays(consciousnessDayKey, -1);
+        renderConsciousness();
+      });
+      document.getElementById("nextDayCons").addEventListener("click", function () {
+        saveConsciousness();
+        consciousnessDayKey = addDays(consciousnessDayKey, 1);
+        renderConsciousness();
+      });
+
+      function formatDateShort(dateStr) {
+        if (!dateStr) return "";
+        const [y, m, d] = dateStr.split("-").map(Number);
+        const date = new Date(y, m - 1, d);
+        return date.toLocaleDateString("tr-TR", { day: "numeric", month: "short", year: "numeric" });
+      }
+
+      function renderPlanning() {
+        const all = getStored(STORAGE_PLANS, []);
+        let filtered = all;
+        if (currentPlanFilter !== "all") {
+          filtered = all.filter(function (p) { return p.tag === currentPlanFilter; });
+        }
+        filtered.sort(function (a, b) {
+          if (a.date && b.date) return a.date.localeCompare(b.date);
+          if (a.date) return -1;
+          if (b.date) return 1;
+          return 0;
+        });
+        const container = document.getElementById("plansList");
+        container.innerHTML = "";
+        if (filtered.length === 0) {
+          container.innerHTML = '<div class="empty-state">Henüz plan eklenmemiş</div>';
+          return;
+        }
+        filtered.forEach(function (plan, idx) {
+          const card = document.createElement("div");
+          card.className = "plan-card";
+          const tagClass = plan.tag.toLowerCase().replace("ı", "i").replace("ğ", "g");
+          card.innerHTML = '<div class="plan-card-header"><div class="plan-card-text">' + plan.text + '</div><button type="button" class="plan-delete" data-idx="' + all.indexOf(plan) + '">Sil</button></div><div class="plan-card-meta"><span class="plan-tag ' + tagClass + '">' + plan.tag + '</span><span>' + (plan.date ? formatDateShort(plan.date) : "Tarih yok") + '</span></div>';
+          container.appendChild(card);
+        });
+        document.querySelectorAll(".plan-delete").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            const idx = parseInt(btn.getAttribute("data-idx"));
+            const all = getStored(STORAGE_PLANS, []);
+            all.splice(idx, 1);
+            setStored(STORAGE_PLANS, all);
+            renderPlanning();
+            showToast();
+          });
+        });
+        document.getElementById("planDate").value = todayKey();
+      }
+
+      document.getElementById("addPlanBtn").addEventListener("click", function () {
+        const text = document.getElementById("newPlanText").value.trim();
+        const date = document.getElementById("planDate").value;
+        const tag = document.getElementById("planTag").value;
+        if (!text) {
+          alert("Lütfen plan metnini girin");
+          return;
+        }
+        const all = getStored(STORAGE_PLANS, []);
+        all.push({ text: text, date: date || null, tag: tag, id: Date.now() });
+        setStored(STORAGE_PLANS, all);
+        document.getElementById("newPlanText").value = "";
+        document.getElementById("planDate").value = todayKey();
+        renderPlanning();
+        showToast();
+      });
+
+      document.querySelectorAll(".filter-btn").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          document.querySelectorAll(".filter-btn").forEach(function (b) { b.classList.remove("active"); });
+          btn.classList.add("active");
+          currentPlanFilter = btn.getAttribute("data-filter");
+          renderPlanning();
+        });
+      });
+
+      function renderVision() {
+        const vision = getStored(STORAGE_VISION, "");
+        document.getElementById("visionBoard").value = vision;
+        document.getElementById("visionBoard").onchange = saveVision;
+        document.getElementById("visionBoard").onblur = saveVision;
+
+        const roadmap = getStored(STORAGE_ROADMAP, []);
+        const defaultTitles = {
+          1: "Aşama 1: Temel Disiplin",
+          2: "Aşama 2: Teknik Yetkinlik (Blockchain/AI)",
+          3: "Aşama 3: Prototip İnşası"
+        };
+        document.querySelectorAll(".roadmap-card").forEach(function (card) {
+          const stage = parseInt(card.getAttribute("data-stage"));
+          const data = roadmap.find(function (r) { return r.stage === stage; });
+          const titleInput = card.querySelector(".stage-title");
+          const contentInput = card.querySelector(".stage-content");
+          if (data) {
+            titleInput.value = data.title || defaultTitles[stage] || "";
+            contentInput.value = data.content || "";
+          } else {
+            titleInput.value = defaultTitles[stage] || "";
+            contentInput.value = "";
+          }
+          titleInput.onchange = saveRoadmap;
+          titleInput.onblur = saveRoadmap;
+          contentInput.onchange = saveRoadmap;
+          contentInput.onblur = saveRoadmap;
+        });
+
+        const inspirations = getStored(STORAGE_INSPIRATION, []);
+        const list = document.getElementById("inspirationList");
+        list.innerHTML = "";
+        if (inspirations.length === 0) {
+          list.innerHTML = '<li class="empty-state" style="padding: 16px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">Henüz ilham kaynağı eklenmemiş</li>';
+        } else {
+          inspirations.forEach(function (item, idx) {
+            const li = document.createElement("li");
+            li.className = "inspiration-item";
+            li.innerHTML = '<span>' + item + '</span><button type="button" class="inspiration-delete" data-idx="' + idx + '">Sil</button>';
+            list.appendChild(li);
+          });
+          document.querySelectorAll(".inspiration-delete").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const idx = parseInt(btn.getAttribute("data-idx"));
+              const all = getStored(STORAGE_INSPIRATION, []);
+              all.splice(idx, 1);
+              setStored(STORAGE_INSPIRATION, all);
+              renderVision();
+              showToast();
+            });
+          });
+        }
+      }
+
+      function saveVision() {
+        const text = document.getElementById("visionBoard").value.trim();
+        setStored(STORAGE_VISION, text);
+        showToast();
+      }
+
+      function saveRoadmap() {
+        const roadmap = [];
+        document.querySelectorAll(".roadmap-card").forEach(function (card) {
+          const stage = parseInt(card.getAttribute("data-stage"));
+          const title = card.querySelector(".stage-title").value.trim();
+          const content = card.querySelector(".stage-content").value.trim();
+          roadmap.push({ stage: stage, title: title, content: content });
+        });
+        setStored(STORAGE_ROADMAP, roadmap);
+        showToast();
+      }
+
+      document.getElementById("addStageBtn").addEventListener("click", function () {
+        const container = document.querySelector(".roadmap-container");
+        const cards = container.querySelectorAll(".roadmap-card");
+        const nextStage = cards.length + 1;
+        const card = document.createElement("div");
+        card.className = "roadmap-card";
+        card.setAttribute("data-stage", nextStage);
+        card.innerHTML = '<div class="roadmap-header"><span class="stage-number">' + nextStage + '</span><input type="text" class="stage-title" placeholder="Aşama başlığı" /></div><textarea class="stage-content" placeholder="Bu aşamadaki hedeflerini yaz…" rows="3"></textarea>';
+        container.appendChild(card);
+        card.querySelector(".stage-title").onchange = saveRoadmap;
+        card.querySelector(".stage-title").onblur = saveRoadmap;
+        card.querySelector(".stage-content").onchange = saveRoadmap;
+        card.querySelector(".stage-content").onblur = saveRoadmap;
+        saveRoadmap();
+      });
+
+      document.getElementById("addInspirationBtn").addEventListener("click", function () {
+        const input = document.getElementById("newInspiration");
+        const text = input.value.trim();
+        if (!text) {
+          alert("Lütfen bir ilham kaynağı girin");
+          return;
+        }
+        const all = getStored(STORAGE_INSPIRATION, []);
+        all.push(text);
+        setStored(STORAGE_INSPIRATION, all);
+        input.value = "";
+        renderVision();
+        showToast();
+      });
+
+      document.getElementById("newInspiration").addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          document.getElementById("addInspirationBtn").click();
+        }
+      });
+
+      function backupData() {
+        const data = { version: 1, exportedAt: new Date().toISOString() };
+        BACKUP_KEYS.forEach(function (key) {
+          try {
+            const raw = localStorage.getItem(key);
+            data[key] = raw ? JSON.parse(raw) : null;
+          } catch (_) {
+            data[key] = null;
+          }
+        });
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "yasam-takip-yedek-" + new Date().toISOString().slice(0, 10) + ".json";
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast();
+      }
+
+      function restoreData(file) {
+        const reader = new FileReader();
+        reader.onload = function () {
+          try {
+            const data = JSON.parse(reader.result);
+            if (!data || typeof data !== "object") throw new Error("Geçersiz dosya");
+            BACKUP_KEYS.forEach(function (key) {
+              if (data[key] !== undefined && data[key] !== null) {
+                localStorage.setItem(key, JSON.stringify(data[key]));
+              }
+            });
+            showToast();
+            location.reload();
+          } catch (err) {
+            alert("Yedek dosyası okunamadı. Geçerli bir .json yedek dosyası seçin.");
+          }
+        };
+        reader.readAsText(file, "UTF-8");
+      }
+
+      document.getElementById("vaultBtn").addEventListener("click", function () {
+        document.getElementById("vaultModal").classList.add("show");
+      });
+      document.getElementById("closeVaultModal").addEventListener("click", function () {
+        document.getElementById("vaultModal").classList.remove("show");
+      });
+      document.getElementById("vaultModal").addEventListener("click", function (e) {
+        if (e.target === this) {
+          this.classList.remove("show");
+        }
+      });
+      document.getElementById("backupBtn").addEventListener("click", function () {
+        backupData();
+        setTimeout(function () {
+          document.getElementById("vaultModal").classList.remove("show");
+        }, 500);
+      });
+      document.getElementById("restoreBtn").addEventListener("click", function () {
+        document.getElementById("restoreFile").click();
+      });
+      document.getElementById("restoreFile").addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          restoreData(file);
+          this.value = "";
+        }
+      });
+
+      renderDateBar();
+      renderDaily();
+      renderWeekly();
+      renderConsciousness();
+      renderPlanning();
+      renderVision();
+    })();
+  </script>
+</body>
+</html>
